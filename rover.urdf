@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+<robot name="rover">
+    <material name="grey">
+        <color rgba="0.5 0.5 0.5 1"/>
+    </material>
+
+    <material name="green">
+        <color rgba="0 0.6 0 1"/>
+    </material>
+
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="1 0.4 0.2"/>
+            </geometry>
+            <origin xyz="0 0 0.1" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <link name="backleftwheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="1.57 0 0"/>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="backrightwheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="1.57 0 0"/>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="frontrightwheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="1.57 0 0"/>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="frontleftwheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="1.57 0 0"/>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="antenna">
+        <visual>
+            <geometry>
+                <sphere radius="0.08"/>
+            </geometry>
+            <origin xyz="0.05 0 0.05" rpy="0 0 0"/>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="antenna_mount">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.2"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 1.309"/>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="grappler_base">
+        <visual>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="grappler_extension">
+        <visual>
+            <geometry>
+                <cylinder length="0.355" radius="0.02"/>
+            </geometry>
+            <origin xyz="0.15 0 0" rpy="0 1.5708 0"/>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="grappler_head">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.05"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="left_claw">
+        <visual>
+            <geometry>
+                <box size="0.15 0.02 0.05"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="right_claw">
+        <visual>
+            <geometry>
+                <box size="0.15 0.02 0.05"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+    </link>
+
+    <link name="solar_panel">
+    <visual>
+        <geometry>
+            <box size="0.3 0.3 0.01"/>  
+        </geometry>
+        <origin xyz="0 0 0.1" rpy="0 0 0"/>  
+        <material name="black">
+            <color rgba="0 0 0 1"/> 
+        </material>
+    </visual>
+    </link>
+
+    <joint name="panel_to_base" type="fixed">
+        <parent link="base_link"/>
+        <child link="solar_panel"/>
+        <origin xyz="-0.5 0 0.1" rpy = "0 -0.7854 0"/>
+    </joint>
+
+
+    <joint name="base_to_grappler" type="fixed">
+        <parent link="base_link"/>
+        <child link="grappler_base"/>
+        <origin xyz="0.5 0 0.1"/>
+    </joint>
+
+    <joint name="grappler_extension_joint" type="prismatic">
+        <parent link="grappler_base"/>
+        <child link="grappler_extension"/>
+        <origin xyz="-0.21 0 0"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="0" upper="0.3" effort="100" velocity="0.5"/>
+    </joint>
+
+    <joint name="extension_to_head" type="fixed">
+        <parent link="grappler_extension"/>
+        <child link="grappler_head"/>
+        <origin xyz="0.3 0 0"/>
+    </joint>
+
+    <joint name="left_claw_joint" type="prismatic">
+        <parent link="grappler_head"/>
+        <child link="left_claw"/>
+        <origin xyz="0.08 0.036 0"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="0" upper="0.1" effort="50" velocity="0.5"/>
+    </joint>
+
+    <joint name="right_claw_joint" type="prismatic">
+        <parent link="grappler_head"/>
+        <child link="right_claw"/>
+        <origin xyz="0.08 -0.036 0"/>
+        <axis xyz="0 -1 0"/>
+        <limit lower="0" upper="0.1" effort="50" velocity="0.5"/>
+    </joint>
+
+    <joint name="base_backleftwheel" type="continuous">
+        <parent link="base_link"/>
+        <child link="backleftwheel"/>
+        <origin xyz="-0.3 0.225 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <joint name="base_backrightwheel" type="continuous">
+        <parent link="base_link"/>
+        <child link="backrightwheel"/>
+        <origin xyz="-0.3 -0.225 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <joint name="base_frontleftwheel" type="continuous">
+        <parent link="base_link"/>
+        <child link="frontleftwheel"/>
+        <origin xyz="0.3 0.225 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <joint name="base_frontrightwheel" type="continuous">
+        <parent link="base_link"/>
+        <child link="frontrightwheel"/>
+        <origin xyz="0.3 -0.225 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <joint name="base_antenna_mount" type="fixed">
+        <parent link="base_link"/>
+        <child link="antenna_mount"/>
+        <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="antenna_mount_antenna" type="fixed">
+        <parent link="antenna_mount"/>
+        <child link="antenna"/>
+        <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </joint>
+
+</robot>
